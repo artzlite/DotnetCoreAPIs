@@ -31,7 +31,7 @@ namespace NetCoreAPIs_Template.Controllers
             //MongoDBUtil._Things.Add();
             string json = JsonConvert.SerializeObject(SettingsHelper.MongoDB);
 
-            things t = MongoDBUtil._Things.FindOne(new MongoDB.Bson.ObjectId("5b34545fc3fb4d09423a4ae8"));
+            things t = MongoDBUtil._Things.FindOne(new MongoDB.Bson.ObjectId("34545fc3fb4d09423a4ae899"));
 
             return SettingsHelper.MongoDB;
         }

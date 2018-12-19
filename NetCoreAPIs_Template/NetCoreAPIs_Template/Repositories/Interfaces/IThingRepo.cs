@@ -9,7 +9,7 @@ namespace NetCoreAPIs_Template.Repositories.Interfaces
 {
     public interface IThingRepo
     {
-        void Add(things entity);
+        void Create(things entity);
         //IEnumerable<things> GetList();
         things FindOne(ObjectId _id);
         //things Remove(string key);

@@ -14,7 +14,7 @@ namespace NetCoreAPIs_Template.Repositories
     {
         private readonly string _collectionName = "things";
 
-        public void Add(things entity)
+        public void Create(things entity)
         {
             MongoDBHandle.Mongodb.GetCollection<things>(_collectionName).InsertOne(entity);
         }
