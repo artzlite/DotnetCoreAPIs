@@ -2,36 +2,54 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using NetCoreAPIs_Template.MappingErrors;
 using NetCoreAPIs_Template.Models;
+using NetCoreAPIs_Template.Process;
+using Newtonsoft.Json;
+using NLog;
 
 namespace NetCoreAPIs_Template.Controllers
 {
-    [Route("api/[controller]")]
+    //[Authorize]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class TestController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult Get()
+        private readonly ILogger<TestController> _logger;
+        public TestController(ILogger<TestController> logger)
         {
-            TestResponse resp = new TestResponse()
+            _logger = logger;
+        }
+        /// <summary>
+        /// TestController Get()
+        /// </summary>
+        [HttpGet]
+        [Produces("application/json")]
+        [ProducesResponseType(200, Type = typeof(TestResponse))]
+        [ProducesResponseType(400, Type = typeof(TestResponse))]
+        public IActionResult Get(string id)
+        {
+            #region mock
+            TestRequest req = new TestRequest()
             {
-                OperationStatus = new Base.OperationStatus()
+                orderreftest = "orderref",
+                id = 99,
+                name = "nametset",
+                nes = new nested()
                 {
-                    Code = "201",
-                    Description = "DESCccccc",
-                    IsSuccess = true,
-                    OrderRef = "asdfg13456",
-                    StatusCode = System.Net.HttpStatusCode.Created
+                    nesA = 55,
+                    nesB = "nesTT"
                 }
-            };
-            resp.dict = new Dictionary<string, int>();
-            resp.dict.Add("a", 1);
-            resp.dict.Add("b", 2);
-            resp.dict.Add("c", 3);
 
+            };
+            #endregion
+
+            TestProcess t = new TestProcess(_logger);
+            TestResponse resp = t.testss(req);
             return HttpActions.CustomResult(resp.OperationStatus.StatusCode, resp);
         }
     }

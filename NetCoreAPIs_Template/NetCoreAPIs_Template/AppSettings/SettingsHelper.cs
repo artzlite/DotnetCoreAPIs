@@ -23,6 +23,14 @@ namespace NetCoreAPIs_Template.AppSettings
             }
         }
 
+        public static JwtMapping Jwt
+        {
+            get
+            {
+                return _settings.Jwt;
+            }
+        }
+
 
     }
 }

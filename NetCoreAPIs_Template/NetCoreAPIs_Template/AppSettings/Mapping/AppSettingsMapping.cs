@@ -9,5 +9,6 @@ namespace NetCoreAPIs_Template.AppSettings.Mapping
     {
         public string Test { get; set; }
         public MongoDBMapping MongoDB { get; set; }
+        public JwtMapping Jwt { get; set; }
     }
 }

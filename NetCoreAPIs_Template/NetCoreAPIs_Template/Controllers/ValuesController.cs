@@ -26,14 +26,14 @@ namespace NetCoreAPIs_Template.Controllers
 
         // GET api/values
         [HttpGet]
-        public ActionResult<MongoDBMapping> Get()
+        public ActionResult<string> Get()
         {
             //MongoDBUtil._Things.Add();
             string json = JsonConvert.SerializeObject(SettingsHelper.MongoDB);
 
             things t = MongoDBUtil._Things.FindOne(new MongoDB.Bson.ObjectId("34545fc3fb4d09423a4ae899"));
 
-            return SettingsHelper.MongoDB;
+            return json;
         }
 
         // GET api/values/5

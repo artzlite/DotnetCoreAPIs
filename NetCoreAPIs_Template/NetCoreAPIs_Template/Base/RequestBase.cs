@@ -7,6 +7,6 @@ namespace NetCoreAPIs_Template.Base
 {
     public class RequestBase
     {
-       
+        public string orderreftest { get; set; }
     }
 }
