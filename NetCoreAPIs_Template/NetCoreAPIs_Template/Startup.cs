@@ -22,7 +22,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NetCoreAPIs_Template.AppSettings.Mapping;
-using NetCoreAPIs_Template.Authorize;
+using NetCoreAPIs_Template.Filters;
 using NetCoreAPIs_Template.MappingErrors;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
@@ -55,6 +55,13 @@ namespace NetCoreAPIs_Template
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
+
             services.Configure<AppSettingsMapping>(Configuration.GetSection("AppSettings"));
 
             // Register the Swagger generator, defining 1 or more Swagger documents
@@ -115,7 +122,8 @@ namespace NetCoreAPIs_Template
                 var policy = new AuthorizationPolicyBuilder()
                              .RequireAuthenticatedUser()
                              .Build();
-                config.Filters.Add(new AuthorizeHandle(policy));
+                config.Filters.Add(new Filters.AuthorizeAttribute(policy));
+                config.Filters.Add(typeof(ValidateModelStateAttribute));
             });
         }
 
@@ -140,39 +148,12 @@ namespace NetCoreAPIs_Template
             app.UseAuthentication();
             app.UseMvc();
 
-            // [Authorize] would usually handle this
-            app.Use(async (context, next) =>
-            {
-                // Use this if there are multiple authentication schemes
-                var authResult = await context.AuthenticateAsync(JwtBearerDefaults.AuthenticationScheme);
-                if (authResult.Succeeded && authResult.Principal.Identity.IsAuthenticated)
-                {
-                    //await next();
-                    ExceptionDispatchInfo.Capture(authResult.Failure).Throw();
-                }
-                else if (authResult.Failure != null)
-                {
-                    //// Rethrow, let the exception page handle it.
-                    //ExceptionDispatchInfo.Capture(authResult.Failure).Throw();
-                }
-                else
-                {
-                    await context.ChallengeAsync();
-                }
-            });
-
             app.UseMvc(routes =>
             {
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
 
             AppSettings.SettingsHelper.Initial(options);
-
-            //app.Run(context =>
-            //{
-            //    context.Response.Redirect("swagger");
-            //    return Task.CompletedTask;
-            //});
         }
     }
 }

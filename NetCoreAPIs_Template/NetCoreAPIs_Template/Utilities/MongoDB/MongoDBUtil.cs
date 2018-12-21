@@ -1,7 +1,5 @@
 ﻿using MongoDB.Driver;
 using NetCoreAPIs_Template.Entities;
-using NetCoreAPIs_Template.Repositories;
-using NetCoreAPIs_Template.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,10 +14,25 @@ namespace NetCoreAPIs_Template.Utilities.MongoDB
             get { return new UpdateOptions { IsUpsert = false }; }
         }
 
-        public static IThingRepo _Things
+        public static IMongoCollection<things> _Things
         {
-            get { return new ThingsRepo(); }
-            //get { return MongoDBHandle.Mongodb.GetCollection<things>("things"); }
+            get { return MongoDBHandle.Mongodb.GetCollection<things>(MongoDBCollectionName.things); }
         }
+
+        public static IMongoCollection<user> _User
+        {
+            get { return MongoDBHandle.Mongodb.GetCollection<user>(MongoDBCollectionName.user); }
+        }
+
+        public static IMongoCollection<configgroups> _Configgroups
+        {
+            get { return MongoDBHandle.Mongodb.GetCollection<configgroups>(MongoDBCollectionName.configgroups); }
+        }
+
+        public static IMongoCollection<thingsdatas> _ThingsDatas
+        {
+            get { return MongoDBHandle.Mongodb.GetCollection<thingsdatas>(MongoDBCollectionName.thingsdatas); }
+        }
+
     }
 }

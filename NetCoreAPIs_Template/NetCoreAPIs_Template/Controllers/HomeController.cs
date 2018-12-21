@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace NetCoreAPIs_Template.Controllers
 {
-    [AllowAnonymous]
     public class HomeController : Controller
     {
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return new RedirectResult("~/swagger");

@@ -9,29 +9,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace NetCoreAPIs_Template.Authorize
+namespace NetCoreAPIs_Template.Filters
 {
-    public class AuthorizeHandle : AuthorizeFilter
+    public class AuthorizeAttribute : AuthorizeFilter
     {
-        public AuthorizeHandle(AuthorizationPolicy policy) : base(policy)
+        public AuthorizeAttribute(AuthorizationPolicy policy) : base(policy)
         {
         }
 
         public override Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
-            if (!context.HttpContext.User.Identity.IsAuthenticated)
+            if (!context.HttpContext.User.Identity.IsAuthenticated && !context.Filters.OfType<AllowAnonymousFilter>().Any())
             {
-                UnauthorizedResponse resp = new UnauthorizedResponse() {
+                UnauthorizedResponse resp = new UnauthorizedResponse()
+                {
                     OperationStatus = HttpActions.GetResponse(ErrorCodes.AccountAuthenFailed)
-                }; 
+                };
 
-                return HttpActions.CustomResult(resp.OperationStatus.StatusCode,resp).ExecuteResultAsync(context);
+                return HttpActions.CustomResult(resp.OperationStatus.StatusCode, resp).ExecuteResultAsync(context);
             }
-
-            //else if (!context.ModelState.IsValid)
-            //{
-
-            //}
             return base.OnAuthorizationAsync(context);
         }
     }

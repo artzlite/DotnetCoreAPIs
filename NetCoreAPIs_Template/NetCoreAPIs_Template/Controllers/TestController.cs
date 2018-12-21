@@ -27,26 +27,29 @@ namespace NetCoreAPIs_Template.Controllers
         /// <summary>
         /// TestController Get()
         /// </summary>
-        [HttpGet]
+        [HttpPost]
         [Produces("application/json")]
         [ProducesResponseType(200, Type = typeof(TestResponse))]
-        [ProducesResponseType(400, Type = typeof(TestResponse))]
-        public IActionResult Get(string id)
+        public IActionResult Get(TestRequest req)
         {
-            #region mock
-            TestRequest req = new TestRequest()
+            if (!ModelState.IsValid)
             {
-                orderreftest = "orderref",
-                id = 99,
-                name = "nametset",
-                nes = new nested()
-                {
-                    nesA = 55,
-                    nesB = "nesTT"
-                }
+                return BadRequest(ModelState);
+            }
+            //#region mock
+            //TestRequest req = new TestRequest()
+            //{
+            //    orderreftest = "orderref",
+            //    id = 99,
+            //    name = "nametset",
+            //    nes = new nested()
+            //    {
+            //        nesA = 55,
+            //        nesB = "nesTT"
+            //    }
 
-            };
-            #endregion
+            //};
+            //#endregion
 
             TestProcess t = new TestProcess(_logger);
             TestResponse resp = t.testss(req);

@@ -1,6 +1,7 @@
 ﻿using NetCoreAPIs_Template.Base;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,7 +9,10 @@ namespace NetCoreAPIs_Template.Models
 {
     public class TestRequest : RequestBase
     {
-        public int id { get; set; }
+        [Required]
+        [MinLength(10)]
+        public string Test { get; set; }
+        [Required]
         public string name { get; set; }
         public nested nes { get; set; }
     }

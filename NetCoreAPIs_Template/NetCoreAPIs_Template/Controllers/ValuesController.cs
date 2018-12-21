@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver;
 using NetCoreAPIs_Template.AppSettings;
 using NetCoreAPIs_Template.AppSettings.Mapping;
 using NetCoreAPIs_Template.Entities;
@@ -31,7 +32,7 @@ namespace NetCoreAPIs_Template.Controllers
             //MongoDBUtil._Things.Add();
             string json = JsonConvert.SerializeObject(SettingsHelper.MongoDB);
 
-            things t = MongoDBUtil._Things.FindOne(new MongoDB.Bson.ObjectId("34545fc3fb4d09423a4ae899"));
+            things t = MongoDBUtil._Things.Find(u => u.thingId == new MongoDB.Bson.ObjectId("asfasfasfasf")).FirstOrDefault();
 
             return json;
         }
